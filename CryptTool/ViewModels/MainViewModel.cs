@@ -55,6 +55,12 @@ namespace CryptTool.ViewModels
                 PageUri = new Uri("/Views/Pages/FileEncryptPage.xaml", UriKind.Relative)
             });
 
+            Items.Add(new NavigationItemViewModel
+            {
+                Title = "Folder Encrypt",
+                PageUri = new Uri("/Views/Pages/FolderEncryptPage.xaml", UriKind.Relative)
+            });
+
             if (Items.Count > 0)
             {
                 SelectedItem = Items[0];
