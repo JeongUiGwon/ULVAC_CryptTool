@@ -73,6 +73,7 @@
     <Compile Include="Services\FolderSystemService.cs" />
     <Compile Include="Services\IFolderSystemService.cs" />
     <Compile Include="ViewModels\Pages\FolderEncryptViewModel.cs" />
+    <Compile Include="ViewModels\Pages\LogEncryptViewModel.cs" />
     <Compile Include="ViewModels\Pages\RecipeEncryptViewModel.cs" />
     <Compile Include="Views\Pages\FileEncryptPage.xaml.cs">
       <DependentUpon>FileEncryptPage.xaml</DependentUpon>
@@ -82,6 +83,9 @@
     </Compile>
     <Compile Include="Views\Pages\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Pages\LogEncryptPage.xaml.cs">
+      <DependentUpon>LogEncryptPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Pages\RecipeEncryptPage.xaml.cs">
       <DependentUpon>RecipeEncryptPage.xaml</DependentUpon>
@@ -121,6 +125,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Pages\LogEncryptPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Pages\RecipeEncryptPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -144,6 +152,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
