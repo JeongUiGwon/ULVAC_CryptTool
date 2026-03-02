@@ -17,7 +17,7 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -31,19 +31,52 @@
                     Orientation="Horizontal"
                     VerticalAlignment="Center">
             <TextBlock FontSize="16"
+                       Margin="0,6"
                        Text="{Binding Version}"/>
         </StackPanel>
 
-        <!-- Release Notes -->
-        <GroupBox Grid.Row="4" Header="Release Notes">
-            <TextBox Text="{Binding ReleaseNoteText, Mode=OneWay}"
-                     Margin="5"
-                     BorderThickness="0"
-                     Background="Transparent"
-                     IsReadOnly="True"
-                     TextWrapping="Wrap"
-                     VerticalScrollBarVisibility="Auto"
-                     HorizontalScrollBarVisibility="Disabled"/>
-        </GroupBox>
+        <!-- Release Note Card -->
+        <Border Grid.Row="2"
+                Background="White"
+                CornerRadius="10"
+                Padding="10"
+                BorderBrush="#E1E4E8"
+                BorderThickness="1">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Header -->
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontSize="18"
+                               FontWeight="Bold"
+                               Foreground="#333333"
+                               Text="Release Notes"/>
+                </StackPanel>
+
+                <!-- Divider -->
+                <Border Grid.Row="1"
+                        Height="1"
+                        Background="#E5E7EB"
+                        Margin="0,6,0,6"/>
+
+                <!-- Content -->
+                <ScrollViewer Grid.Row="2"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled">
+
+                    <TextBlock Text="{Binding ReleaseNoteText, Mode=OneWay}"
+                               FontSize="14"
+                               Foreground="#444444"
+                               TextWrapping="Wrap"
+                               LineHeight="22"/>
+                </ScrollViewer>
+
+            </Grid>
+        </Border>
     </Grid>
 </Page>

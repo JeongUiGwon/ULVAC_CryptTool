@@ -67,6 +67,12 @@ namespace CryptTool.ViewModels
                 PageUri = new Uri("/Views/Pages/RecipeEncryptPage.xaml", UriKind.Relative)
             });
 
+            Items.Add(new NavigationItemViewModel
+            {
+                Title = "Log Encrypt",
+                PageUri = new Uri("/Views/Pages/LogEncryptPage.xaml", UriKind.Relative)
+            });
+
             if (Items.Count > 0)
             {
                 SelectedItem = Items[0];

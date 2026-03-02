@@ -9,13 +9,12 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
-using static System.Net.WebRequestMethods;
 
 namespace CryptTool.ViewModels.Pages
 {
-    public class RecipeEncryptViewModel : BaseViewModel
+    public class LogEncryptViewModel : BaseViewModel
     {
-        private const string DefaultRecipePath = @"D:\Entron\Recipe";
+        private const string DefaultLogPath = @"D:\ENTRON\HISTORY";
 
         private readonly IFileSystemService _fileSystemService;
         private readonly IFolderSystemService _folderSystemService;
@@ -87,7 +86,7 @@ namespace CryptTool.ViewModels.Pages
                 }
             }
         }
-        public RecipeEncryptViewModel()
+        public LogEncryptViewModel()
         {
             _fileSystemService = new FileSystemService();
             _folderSystemService = new FolderSystemService();
@@ -110,7 +109,7 @@ namespace CryptTool.ViewModels.Pages
             {
                 FolderPath = path;
             }
-            else 
+            else
             {
                 return;
             }
@@ -134,7 +133,7 @@ namespace CryptTool.ViewModels.Pages
 
         private bool CanExecuteCrypto(object obj)
         {
-            if( IsBusy)
+            if (IsBusy)
             {
                 return false;
             }
@@ -288,15 +287,25 @@ namespace CryptTool.ViewModels.Pages
                 return;
             }
 
-            string[] recipeFileFormat = new string[] { "recdat.*", "recmdat.*", "recedat.*", "rec3dtdat.*" };
-
-            foreach (string format in recipeFileFormat)
+            // PMC LOG
+            var paths = _fileSystemService.GetFiles(FolderPath + "\\LOG", true, "LDT*.CSV");
+            for (int i = 0; i < paths.Count; i++)
             {
-                var paths = _fileSystemService.GetFiles(FolderPath, true, format);
-                for (int i = 0; i < paths.Count; i++)
-                {
-                    Files.Add(new FileInfo(paths[i]));
-                }
+                Files.Add(new FileInfo(paths[i]));
+            }
+
+            // SMC LOG
+            paths = _fileSystemService.GetFiles(FolderPath + "\\SMC_LOG", true, "LDT*.CSV");
+            for (int i = 0; i < paths.Count; i++)
+            {
+                Files.Add(new FileInfo(paths[i]));
+            }
+
+            // MAN LOG
+            paths = _fileSystemService.GetFiles(FolderPath + "\\PRCS", true, "LDT*.CSV");
+            for (int i = 0; i < paths.Count; i++)
+            {
+                Files.Add(new FileInfo(paths[i]));
             }
 
             SummaryText = "Found " + Files.Count + " files";
@@ -323,9 +332,9 @@ namespace CryptTool.ViewModels.Pages
         {
             try
             {
-                if (Directory.Exists(DefaultRecipePath))
+                if (Directory.Exists(DefaultLogPath))
                 {
-                    FolderPath = DefaultRecipePath;
+                    FolderPath = DefaultLogPath;
                     LoadFiles();
                 }
             }

@@ -8,7 +8,7 @@ namespace CryptTool.Services
 {
     public class FileEncryptService : IFileEncryptService
     {
-        private const string DefaultPassword = "SUYAMA1220";
+        private string DefaultPassword = Properties.Settings.Default.CryptoPassword;
 
         public void EncryptFile(string encryptedPath)
         {

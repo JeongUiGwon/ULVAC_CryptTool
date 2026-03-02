@@ -2,7 +2,8 @@
 
 특정 파일 암호화 및 복호화 기능 추가
 특정 폴더 암호화 및 복호화 기능 추가
-Recipe 암호화 및 복호화 기능 추가
+Recipe 암호화 및 복호화 기능 추가(recdat.*, recmdat.*, recedat.*, rec3dtdat.*)
+Log 암호화 및 복호화 기능 추가(LOG, MAN_LOG, SMC_LOG)
 
 ✔ UI 개선
 
