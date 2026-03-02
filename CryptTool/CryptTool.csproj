@@ -51,9 +51,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\LogEntryModel.cs" />
+    <Compile Include="Models\WorkReport.cs" />
     <Compile Include="Services\FolderSystemService.cs" />
     <Compile Include="Services\IFolderSystemService.cs" />
     <Compile Include="ViewModels\Pages\FolderEncryptViewModel.cs" />
+    <Compile Include="ViewModels\Pages\RecipeEncryptViewModel.cs" />
     <Compile Include="Views\Pages\FileEncryptPage.xaml.cs">
       <DependentUpon>FileEncryptPage.xaml</DependentUpon>
     </Compile>
@@ -62,6 +64,9 @@
     </Compile>
     <Compile Include="Views\Pages\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Pages\RecipeEncryptPage.xaml.cs">
+      <DependentUpon>RecipeEncryptPage.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\MainView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -95,6 +100,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Pages\HomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Pages\RecipeEncryptPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
