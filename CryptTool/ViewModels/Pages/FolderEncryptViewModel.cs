@@ -10,25 +10,26 @@ using System.Windows.Input;
 
 namespace CryptTool.ViewModels.Pages
 {
-    public class FileEncryptViewModel : BaseViewModel
+    public class FolderEncryptViewModel : BaseViewModel
     {
         private readonly IFileSystemService _fileSystemService;
+        private readonly IFolderSystemService _folderSystemService;
         private readonly IFileEncryptService _fileEncryptService;
         public ICommand BrowseCommand { get; private set; }
         public ICommand DecryptCommand { get; private set; }
         public ICommand EncryptCommand { get; private set; }
         public ICommand ClearLogCommand { get; private set; }
 
-        private string _filePath;
-        public string FilePath
+        private string _folderPath;
+        public string FolderPath
         {
             get
             {
-                return _filePath;
+                return _folderPath;
             }
             set
             {
-                if (SetProperty(ref _filePath, value, () => FilePath))
+                if (SetProperty(ref _folderPath, value, () => FolderPath))
                 {
                     UpdateCommandState();
                 }
@@ -47,9 +48,10 @@ namespace CryptTool.ViewModels.Pages
             }
         }
         public ObservableCollection<LogEntryModel> Logs { get; private set; }
-        public FileEncryptViewModel()
+        public FolderEncryptViewModel()
         {
             _fileSystemService = new FileSystemService();
+            _folderSystemService = new FolderSystemService();
             _fileEncryptService = new FileEncryptService();
 
             BrowseCommand = new RelayCommand(OnBrowse);
@@ -61,16 +63,16 @@ namespace CryptTool.ViewModels.Pages
         }
         private void OnBrowse(object obj)
         {
-            string path = _fileSystemService.BrowseFile();
+            string path = _folderSystemService.BrowseFolder();
 
             if (!string.IsNullOrEmpty(path))
             {
-                FilePath = path;
-                AddLog(LogLevel.Info, "File selected: " + path);
+                FolderPath = path;
+                AddLog(LogLevel.Info, "Folder selected: " + path);
             }
             else
             {
-                AddLog(LogLevel.Info, "File selection canceled.");
+                AddLog(LogLevel.Info, "Folder selection canceled.");
             }
         }
 
@@ -79,8 +81,15 @@ namespace CryptTool.ViewModels.Pages
             try
             {
                 AddLog(LogLevel.Info, "Encrypt start");
-                _fileEncryptService.EncryptFile(_filePath);
-                AddLog(LogLevel.Info, "Encrypt completed");
+
+                string[] files = _fileSystemService.GetFiles(FolderPath, true, "*.*").ToArray();
+                foreach (string file in files)
+                {
+                    _fileEncryptService.EncryptFile(file);
+                    AddLog(LogLevel.Info, file + "Encrypt completed");
+                }
+
+                AddLog(LogLevel.Info, "All files have been encrypted.");
             }
             catch (Exception ex)
             {
@@ -93,8 +102,15 @@ namespace CryptTool.ViewModels.Pages
             try
             {
                 AddLog(LogLevel.Info, "Decrypt start");
-                _fileEncryptService.DecryptFile(_filePath);
-                AddLog(LogLevel.Info, "Decrypt completed");
+
+                string[] files = _fileSystemService.GetFiles(FolderPath, true, "*.*").ToArray();
+                foreach (string file in files)
+                {
+                    _fileEncryptService.DecryptFile(file);
+                    AddLog(LogLevel.Info, file + "Decrypt completed");
+                }
+                
+                AddLog(LogLevel.Info, "All files have been decrypted.");
             }
             catch (Exception ex)
             {
@@ -103,7 +119,7 @@ namespace CryptTool.ViewModels.Pages
         }
         private bool CanExecuteCrypto(object obj)
         {
-            if (string.IsNullOrEmpty(FilePath))
+            if (string.IsNullOrEmpty(FolderPath))
             {
                 return false;
             }

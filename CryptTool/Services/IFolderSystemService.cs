@@ -5,8 +5,8 @@ using System.Text;
 
 namespace CryptTool.Services
 {
-    public interface IFileDialogService
+    public interface IFolderSystemService
     {
-        string OpenFile();
+        string BrowseFolder();
     }
 }

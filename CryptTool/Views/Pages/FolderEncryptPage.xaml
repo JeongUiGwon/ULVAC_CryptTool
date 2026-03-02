@@ -1,4 +1,4 @@
-﻿<Page x:Class="CryptTool.Views.Pages.FileEncryptPage"
+﻿<Page x:Class="CryptTool.Views.Pages.FolderEncryptPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,10 +7,10 @@
       xmlns:vm="clr-namespace:CryptTool.ViewModels.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="FileEncryptPage" Background="White">
+      Title="FolderEncryptPage" Background="White">
 
     <Page.DataContext>
-        <vm:FileEncryptViewModel/>
+        <vm:FolderEncryptViewModel/>
     </Page.DataContext>
 
     <Grid Margin="10">
@@ -25,7 +25,7 @@
         </Grid.RowDefinitions>
 
         <!-- Title -->
-        <TextBlock Grid.Row="0" FontSize="20" FontWeight="Bold" Foreground="#FF222222" Text="File Encrypt / Decrypt"/>
+        <TextBlock Grid.Row="0" FontSize="20" FontWeight="Bold" Foreground="#FF222222" Text="Folder Encrypt / Decrypt"/>
         
         <!-- File Path -->
         <Grid Grid.Row="2">
@@ -37,15 +37,16 @@
                 <ColumnDefinition Width="90"/>
             </Grid.ColumnDefinitions>
 
+
             <TextBlock Grid.Column="0"
                        VerticalAlignment="Center"
-                       Text="File Path:"/>
+                       Text="Folder Path:"/>
 
             <TextBox Grid.Column="2"
                      Height="26"
                      VerticalContentAlignment="Center"
-                     Text="{Binding FilePath, UpdateSourceTrigger=PropertyChanged}"
-                     ToolTip="{Binding FilePath}"
+                     Text="{Binding FolderPath, UpdateSourceTrigger=PropertyChanged}"
+                     ToolTip="{Binding FolderPath}"
                      />
 
             <Button Grid.Column="4"
