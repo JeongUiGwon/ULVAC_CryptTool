@@ -1,0 +1,7 @@
+﻿✔ 주요 기능
+
+✔ UI 개선
+ - Log/Recipe 기본 폴더 경로 설정
+
+✔ 버그 개선
+ - Log/Recipe 불러오기 시, Application Error 발생 문제 해결

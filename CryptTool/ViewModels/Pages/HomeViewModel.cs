@@ -30,7 +30,7 @@ namespace CryptTool.ViewModels.Pages
         public HomeViewModel()
         {
             LoadVersion();
-            LoadReleaseNoteFromResource("/Resources/ReleaseNote_v1.0.0.txt");
+            LoadReleaseNoteFromResource("/Resources/ReleaseNote_v1.0.1.txt");
         }
 
         private void LoadVersion()

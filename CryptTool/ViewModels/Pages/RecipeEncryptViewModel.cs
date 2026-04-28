@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Input;
 using static System.Net.WebRequestMethods;
 
@@ -288,7 +289,17 @@ namespace CryptTool.ViewModels.Pages
                 return;
             }
 
-            string[] recipeFileFormat = new string[] { "recdat.*", "recmdat.*", "recedat.*", "rec3dtdat.*" };
+            if (Directory.Exists(FolderPath) == false)
+            {
+                MessageBox.Show(
+                    "The specified folder does not exist:\n\n" + FolderPath,
+                    "Folder Not Found",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return;
+            }
+
+            string[] recipeFileFormat = new string[] { "INDEX.CSV","recdat.*", "recmdat.*", "recedat.*", "rec3dtdat.*" };
 
             foreach (string format in recipeFileFormat)
             {
@@ -323,9 +334,9 @@ namespace CryptTool.ViewModels.Pages
         {
             try
             {
+                FolderPath = DefaultRecipePath;
                 if (Directory.Exists(DefaultRecipePath))
                 {
-                    FolderPath = DefaultRecipePath;
                     LoadFiles();
                 }
             }
