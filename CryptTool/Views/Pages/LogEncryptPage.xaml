@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CryptTool.Views.Pages"
       xmlns:vm="clr-namespace:CryptTool.ViewModels.Pages"
+      xmlns:behaviors="clr-namespace:CryptTool.Behaviors"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="LogEncryptPage" Background="White">
@@ -75,7 +76,8 @@
                     <TextBox Grid.Column="2"
                              Height="26"
                              VerticalContentAlignment="Center"
-                             Text="{Binding FolderPath, UpdateSourceTrigger=PropertyChanged}"/>
+                             Text="{Binding FolderPath}"      
+                             behaviors:FileDropBehavior.FileDropCommand="{Binding FileDropCommand}"/>    
 
                     <Button Grid.Column="3"
                             Content="Browse"

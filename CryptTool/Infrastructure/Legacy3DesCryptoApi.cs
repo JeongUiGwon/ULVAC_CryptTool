@@ -84,40 +84,56 @@ namespace CryptTool.Infrastructure
         [DllImport("advapi32.dll", SetLastError = true)]
         private static extern bool CryptDestroyKey(IntPtr hKey);
 
-        public static void EncryptFile(string inputPath, string outputPath, string key)
+        public static bool EncryptFile(string inputPath, string outputPath, string key)
         {
-            EncryptFile(inputPath, outputPath, key, Encoding.UTF8, true);
+            return EncryptFile(inputPath, outputPath, key, Encoding.UTF8, true);
         }
 
-        public static void EncryptFile(string inputPath, string outputPath, string key, Encoding keyEncoding, bool overwrite)
+        public static bool EncryptFile(string inputPath, string outputPath, string key, Encoding keyEncoding, bool overwrite)
         {
-            ValidateKey(key);
-            ValidateInputFile(inputPath);
-            ValidateOutputFile(outputPath, overwrite);
+            try
+            {
+                ValidateKey(key);
+                ValidateInputFile(inputPath);
+                ValidateOutputFile(outputPath, overwrite);
 
-            byte[] plainData = File.ReadAllBytes(inputPath);
-            byte[] encryptedData = Transform(plainData, key, keyEncoding ?? Encoding.UTF8, true);
+                byte[] plainData = File.ReadAllBytes(inputPath);
+                byte[] encryptedData = Transform(plainData, key, keyEncoding ?? Encoding.UTF8, true);
 
-            EnsureDirectory(outputPath);
-            File.WriteAllBytes(outputPath, encryptedData);
+                EnsureDirectory(outputPath);
+                File.WriteAllBytes(outputPath, encryptedData);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        public static void DecryptFile(string inputPath, string outputPath, string key)
+        public static bool DecryptFile(string inputPath, string outputPath, string key)
         {
-            DecryptFile(inputPath, outputPath, key, Encoding.UTF8, true);
+            return DecryptFile(inputPath, outputPath, key, Encoding.UTF8, true);
         }
 
-        public static void DecryptFile(string inputPath, string outputPath, string key, Encoding keyEncoding, bool overwrite)
+        public static bool DecryptFile(string inputPath, string outputPath, string key, Encoding keyEncoding, bool overwrite)
         {
-            ValidateKey(key);
-            ValidateInputFile(inputPath);
-            ValidateOutputFile(outputPath, overwrite);
+            try
+            {
+                ValidateKey(key);
+                ValidateInputFile(inputPath);
+                ValidateOutputFile(outputPath, overwrite);
 
-            byte[] encryptedData = File.ReadAllBytes(inputPath);
-            byte[] plainData = Transform(encryptedData, key, keyEncoding ?? Encoding.UTF8, false);
+                byte[] encryptedData = File.ReadAllBytes(inputPath);
+                byte[] plainData = Transform(encryptedData, key, keyEncoding ?? Encoding.UTF8, false);
 
-            EnsureDirectory(outputPath);
-            File.WriteAllBytes(outputPath, plainData);
+                EnsureDirectory(outputPath);
+                File.WriteAllBytes(outputPath, plainData);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         private static byte[] Transform(byte[] input, string key, Encoding keyEncoding, bool encrypt)

@@ -24,6 +24,7 @@ namespace CryptTool.ViewModels.Pages
         public ICommand DecryptCommand { get; private set; }
         public ICommand EncryptCommand { get; private set; }
         public ICommand RefreshCommand { get; private set; }
+        public ICommand FileDropCommand { get; private set; }
 
         private string _folderPath;
         public string FolderPath
@@ -99,6 +100,7 @@ namespace CryptTool.ViewModels.Pages
             RefreshCommand = new RelayCommand(OnRefresh);
             DecryptCommand = new RelayCommand(OnDecrypt, CanExecuteCrypto);
             EncryptCommand = new RelayCommand(OnEncrypt, CanExecuteCrypto);
+            FileDropCommand = new RelayCommand(ExecuteDropFile);
 
             InitializeDefaultFolder();
         }
@@ -390,6 +392,25 @@ namespace CryptTool.ViewModels.Pages
             {
                 // 예외 발생해도 프로그램 죽지 않도록 무시
             }
+        }
+        private void ExecuteDropFile(object parameter)
+        {
+            string filePath = parameter as string;
+
+            if (string.IsNullOrEmpty(filePath))
+            {
+                MessageBox.Show("유효한 경로가 아닙니다. 폴더를 다시 드롭해주세요.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (!Directory.Exists(filePath))
+            {
+                MessageBox.Show("유효한 경로가 아닙니다. 폴더를 다시 드롭해주세요.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            FolderPath = filePath;
+            LoadFiles();
         }
     }
 }

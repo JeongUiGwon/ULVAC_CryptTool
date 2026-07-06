@@ -1,0 +1,9 @@
+﻿✔ 주요 기능
+ - File 또는 Folder Drag & Drop 지원
+ - Default TLT Data Encrypt/Decrypt 기능 지원
+
+✔ UI 개선
+
+
+✔ 버그 개선
+ - Folder Encrypt/Decrypt시 중간에 Error 발생시 진행중인 작업이 중단되는 문제 개선
