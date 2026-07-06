@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CryptTool"
         xmlns:vm="clr-namespace:CryptTool.ViewModels"
         mc:Ignorable="d"
-        Title="Crypt Tool" Height="500" Width="800">
+        Title="Crypt Tool" Height="600" Width="1000">
     
     <Window.Resources>
         <Style x:Key="MenuItemStyle" TargetType="{x:Type ListBoxItem}">
@@ -49,7 +49,7 @@
     
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="2"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
@@ -58,6 +58,7 @@
         <Border Grid.Column="0">
             <DockPanel>
                 <TextBlock DockPanel.Dock="Top"
+                           HorizontalAlignment="Center"
                            Margin="10"
                            FontSize="16"
                            FontWeight="Bold"

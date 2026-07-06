@@ -73,6 +73,12 @@ namespace CryptTool.ViewModels
                 PageUri = new Uri("/Views/Pages/LogEncryptPage.xaml", UriKind.Relative)
             });
 
+            Items.Add(new NavigationItemViewModel
+            {
+                Title = "Default TLT Encrypt",
+                PageUri = new Uri("/Views/Pages/DefaultTltEncryptPage.xaml", UriKind.Relative)
+            });
+
             if (Items.Count > 0)
             {
                 SelectedItem = Items[0];

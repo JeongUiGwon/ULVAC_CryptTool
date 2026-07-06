@@ -68,13 +68,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Behaviors\FileDropBehavior.cs" />
     <Compile Include="Models\LogEntryModel.cs" />
     <Compile Include="Models\WorkReport.cs" />
     <Compile Include="Services\FolderSystemService.cs" />
     <Compile Include="Services\IFolderSystemService.cs" />
+    <Compile Include="ViewModels\Pages\DefaultTltEncryptViewModel.cs" />
     <Compile Include="ViewModels\Pages\FolderEncryptViewModel.cs" />
     <Compile Include="ViewModels\Pages\LogEncryptViewModel.cs" />
     <Compile Include="ViewModels\Pages\RecipeEncryptViewModel.cs" />
+    <Compile Include="Views\Pages\DefaultTltEncryptPage.xaml.cs">
+      <DependentUpon>DefaultTltEncryptPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Pages\FileEncryptPage.xaml.cs">
       <DependentUpon>FileEncryptPage.xaml</DependentUpon>
     </Compile>
@@ -113,6 +118,10 @@
       <DependentUpon>MainView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\Pages\DefaultTltEncryptPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Pages\FileEncryptPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -176,6 +185,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\ReleaseNote_v1.0.1.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ReleaseNote_v1.0.2.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
