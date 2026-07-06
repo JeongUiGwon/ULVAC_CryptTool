@@ -10,25 +10,21 @@ namespace CryptTool.Services
     {
         private string DefaultPassword = Properties.Settings.Default.CryptoPassword;
 
-        public void EncryptFile(string encryptedPath)
+        public bool EncryptFile(string encryptedPath)
         {
-            Legacy3DesCryptoApi.EncryptFile(encryptedPath, encryptedPath, DefaultPassword);
-            return;
+            return Legacy3DesCryptoApi.EncryptFile(encryptedPath, encryptedPath, DefaultPassword);
         }
-        public void EncryptFile(string encryptedPath, string outputPath)
+        public bool EncryptFile(string encryptedPath, string outputPath)
         {
-            Legacy3DesCryptoApi.EncryptFile(encryptedPath, outputPath, DefaultPassword);
-            return;
+            return Legacy3DesCryptoApi.EncryptFile(encryptedPath, outputPath, DefaultPassword);
         }
-        public void DecryptFile(string encryptedPath)
+        public bool DecryptFile(string encryptedPath)
         {
-            Legacy3DesCryptoApi.DecryptFile(encryptedPath, encryptedPath, DefaultPassword);
-            return;
+            return Legacy3DesCryptoApi.DecryptFile(encryptedPath, encryptedPath, DefaultPassword);
         }
-        public void DecryptFile(string encryptedPath, string outputPath)
+        public bool DecryptFile(string encryptedPath, string outputPath)
         {
-            Legacy3DesCryptoApi.DecryptFile(encryptedPath, outputPath, DefaultPassword);
-            return;
+            return Legacy3DesCryptoApi.DecryptFile(encryptedPath, outputPath, DefaultPassword);
         }
     }
 }

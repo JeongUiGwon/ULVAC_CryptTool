@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Input;
 
 namespace CryptTool.ViewModels.Pages
@@ -23,6 +24,7 @@ namespace CryptTool.ViewModels.Pages
         public ICommand DecryptCommand { get; private set; }
         public ICommand EncryptCommand { get; private set; }
         public ICommand RefreshCommand { get; private set; }
+        public ICommand FileDropCommand { get; private set; }
 
         private string _folderPath;
         public string FolderPath
@@ -98,6 +100,7 @@ namespace CryptTool.ViewModels.Pages
             RefreshCommand = new RelayCommand(OnRefresh);
             DecryptCommand = new RelayCommand(OnDecrypt, CanExecuteCrypto);
             EncryptCommand = new RelayCommand(OnEncrypt, CanExecuteCrypto);
+            FileDropCommand = new RelayCommand(ExecuteDropFile);
 
             InitializeDefaultFolder();
         }
@@ -280,6 +283,8 @@ namespace CryptTool.ViewModels.Pages
 
         private void LoadFiles()
         {
+            string missing = "";
+
             Files.Clear();
 
             if (string.IsNullOrEmpty(FolderPath))
@@ -287,25 +292,70 @@ namespace CryptTool.ViewModels.Pages
                 return;
             }
 
-            // PMC LOG
-            var paths = _fileSystemService.GetFiles(FolderPath + "\\LOG", true, "LDT*.CSV");
-            for (int i = 0; i < paths.Count; i++)
+            if (Directory.Exists(FolderPath) == false)
             {
-                Files.Add(new FileInfo(paths[i]));
+                MessageBox.Show(
+                    "The specified folder does not exist:\n\n" + FolderPath,
+                    "Folder Not Found",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return;
+            }
+
+            string logPath = FolderPath + "\\LOG";
+            string smcPath = FolderPath + "\\SMC_LOG";
+            string prcsPath = FolderPath + "\\PRCS";
+
+            // PMC LOG
+            if (System.IO.Directory.Exists(logPath) == true)
+            {
+                var paths = _fileSystemService.GetFiles(logPath, true, "LDT*.CSV");
+                for (int i = 0; i < paths.Count; i++)
+                {
+                    Files.Add(new FileInfo(paths[i]));
+                }
             }
 
             // SMC LOG
-            paths = _fileSystemService.GetFiles(FolderPath + "\\SMC_LOG", true, "LDT*.CSV");
-            for (int i = 0; i < paths.Count; i++)
+            if (System.IO.Directory.Exists(smcPath) == true)
             {
-                Files.Add(new FileInfo(paths[i]));
+                var paths = _fileSystemService.GetFiles(smcPath, true, "LDT*.CSV");
+                for (int i = 0; i < paths.Count; i++)
+                {
+                    Files.Add(new FileInfo(paths[i]));
+                }
             }
 
             // MAN LOG
-            paths = _fileSystemService.GetFiles(FolderPath + "\\PRCS", true, "LDT*.CSV");
-            for (int i = 0; i < paths.Count; i++)
+            if (System.IO.Directory.Exists(prcsPath) == true)
             {
-                Files.Add(new FileInfo(paths[i]));
+                var paths = _fileSystemService.GetFiles(prcsPath, true, "LDT*.CSV");
+                for (int i = 0; i < paths.Count; i++)
+                {
+                    Files.Add(new FileInfo(paths[i]));
+                }
+            }
+
+            if (Directory.Exists(logPath) == false)
+            {
+                missing += "LOG\n";
+            }
+            if (Directory.Exists(smcPath) == false)
+            {
+                missing += "SMC_LOG\n";
+            }
+            if (Directory.Exists(prcsPath) == false)
+            {
+                missing += "PRCS\n";
+            }
+
+            if (missing.Length > 0)
+            {
+                MessageBox.Show(
+                   "The following folders were not found:\n\n" + missing,
+                   "Folder Not Found",
+                   MessageBoxButton.OK,
+                   MessageBoxImage.Warning);
             }
 
             SummaryText = "Found " + Files.Count + " files";
@@ -332,9 +382,9 @@ namespace CryptTool.ViewModels.Pages
         {
             try
             {
+                FolderPath = DefaultLogPath;
                 if (Directory.Exists(DefaultLogPath))
                 {
-                    FolderPath = DefaultLogPath;
                     LoadFiles();
                 }
             }
@@ -342,6 +392,25 @@ namespace CryptTool.ViewModels.Pages
             {
                 // 예외 발생해도 프로그램 죽지 않도록 무시
             }
+        }
+        private void ExecuteDropFile(object parameter)
+        {
+            string filePath = parameter as string;
+
+            if (string.IsNullOrEmpty(filePath))
+            {
+                MessageBox.Show("유효한 경로가 아닙니다. 폴더를 다시 드롭해주세요.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (!Directory.Exists(filePath))
+            {
+                MessageBox.Show("유효한 경로가 아닙니다. 폴더를 다시 드롭해주세요.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            FolderPath = filePath;
+            LoadFiles();
         }
     }
 }

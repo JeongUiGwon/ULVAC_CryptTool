@@ -4,8 +4,10 @@ using CryptTool.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Input;
 
 namespace CryptTool.ViewModels.Pages
@@ -18,6 +20,7 @@ namespace CryptTool.ViewModels.Pages
         public ICommand DecryptCommand { get; private set; }
         public ICommand EncryptCommand { get; private set; }
         public ICommand ClearLogCommand { get; private set; }
+        public ICommand FileDropCommand { get; private set; }
 
         private string _filePath;
         public string FilePath
@@ -56,6 +59,7 @@ namespace CryptTool.ViewModels.Pages
             DecryptCommand = new RelayCommand(OnDecrypt, CanExecuteCrypto);
             EncryptCommand = new RelayCommand(OnEncrypt, CanExecuteCrypto);
             ClearLogCommand = new RelayCommand(OnClearLog);
+            FileDropCommand = new RelayCommand(ExecuteDropFile);
 
             Logs = new ObservableCollection<LogEntryModel>();
         }
@@ -76,11 +80,21 @@ namespace CryptTool.ViewModels.Pages
 
         private void OnEncrypt(object obj)
         {
+            bool isSuccess = false;
+
             try
             {
                 AddLog(LogLevel.Info, "Encrypt start");
-                _fileEncryptService.EncryptFile(_filePath);
-                AddLog(LogLevel.Info, "Encrypt completed");
+                isSuccess = _fileEncryptService.EncryptFile(_filePath);
+
+                if (isSuccess)
+                {
+                    AddLog(LogLevel.Info, "Encrypt completed");
+                }
+                else
+                {
+                    AddLog(LogLevel.Error, "Encrypt failed");
+                }
             }
             catch (Exception ex)
             {
@@ -90,11 +104,20 @@ namespace CryptTool.ViewModels.Pages
 
         private void OnDecrypt(object obj)
         {
+            bool isSuccess = false;
+
             try
             {
                 AddLog(LogLevel.Info, "Decrypt start");
-                _fileEncryptService.DecryptFile(_filePath);
-                AddLog(LogLevel.Info, "Decrypt completed");
+                isSuccess = _fileEncryptService.DecryptFile(_filePath);
+                if(isSuccess)
+                {
+                    AddLog(LogLevel.Info, "Decrypt completed");
+                }
+                else
+                {
+                    AddLog(LogLevel.Error, "Decrypt failed");
+                }
             }
             catch (Exception ex)
             {
@@ -144,6 +167,24 @@ namespace CryptTool.ViewModels.Pages
             {
                 decrypt.RaiseCanExecuteChanged();
             }
+        }
+        private void ExecuteDropFile(object parameter)
+        {
+            string filePath = parameter as string;
+
+            if (string.IsNullOrEmpty(filePath))
+            {
+                MessageBox.Show("유효한 경로가 아닙니다. 파일을 다시 드롭해주세요.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (!File.Exists(filePath))
+            {
+                MessageBox.Show("유효한 경로가 아닙니다. 파일을 다시 드롭해주세요.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            FilePath = filePath;
         }
     }
 }

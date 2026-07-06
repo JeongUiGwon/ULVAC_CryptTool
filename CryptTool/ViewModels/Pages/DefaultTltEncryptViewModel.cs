@@ -10,13 +10,12 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
-using static System.Net.WebRequestMethods;
 
 namespace CryptTool.ViewModels.Pages
 {
-    public class RecipeEncryptViewModel : BaseViewModel
+    public class DefaultTltEncryptViewModel : BaseViewModel
     {
-        private const string DefaultRecipePath = @"D:\Entron\Recipe";
+        private const string DefaultTltDataPath = @"D:\ENTRON\DAT\DefaultTLTData";
 
         private readonly IFileSystemService _fileSystemService;
         private readonly IFolderSystemService _folderSystemService;
@@ -89,7 +88,7 @@ namespace CryptTool.ViewModels.Pages
                 }
             }
         }
-        public RecipeEncryptViewModel()
+        public DefaultTltEncryptViewModel()
         {
             _fileSystemService = new FileSystemService();
             _folderSystemService = new FolderSystemService();
@@ -113,7 +112,7 @@ namespace CryptTool.ViewModels.Pages
             {
                 FolderPath = path;
             }
-            else 
+            else
             {
                 return;
             }
@@ -137,7 +136,7 @@ namespace CryptTool.ViewModels.Pages
 
         private bool CanExecuteCrypto(object obj)
         {
-            if( IsBusy)
+            if (IsBusy)
             {
                 return false;
             }
@@ -243,9 +242,9 @@ namespace CryptTool.ViewModels.Pages
 
             try
             {
-                if (System.IO.File.Exists(tempPath))
+                if (File.Exists(tempPath))
                 {
-                    System.IO.File.Delete(tempPath);
+                    File.Delete(tempPath);
                 }
             }
             catch
@@ -263,27 +262,30 @@ namespace CryptTool.ViewModels.Pages
 
             try
             {
-                System.IO.File.Replace(tempPath, path, null, true);
+                File.Replace(tempPath, path, null, true);
             }
             catch
             {
                 try
                 {
-                    if (System.IO.File.Exists(path))
+                    if (File.Exists(path))
                     {
-                        System.IO.File.Delete(path);
+                        File.Delete(path);
                     }
                 }
                 catch
                 {
                 }
 
-                System.IO.File.Move(tempPath, path);
+                File.Move(tempPath, path);
             }
         }
 
         private void LoadFiles()
         {
+            string[] ExcludedFileNames = { "ALMTLT.DAT", "MANTLT.DAT" };
+            bool isExcluded = false;
+
             Files.Clear();
 
             if (string.IsNullOrEmpty(FolderPath))
@@ -301,14 +303,26 @@ namespace CryptTool.ViewModels.Pages
                 return;
             }
 
-            string[] recipeFileFormat = new string[] { "INDEX.CSV","recdat.*", "recmdat.*", "recedat.*", "rec3dtdat.*" };
+            // 모든 DAT 파일 조회
+            var datFiles = _fileSystemService.GetFiles( FolderPath, true, "*.dat");
 
-            foreach (string format in recipeFileFormat)
+            for (int i = 0; i < datFiles.Count; i++)
             {
-                var paths = _fileSystemService.GetFiles(FolderPath, true, format);
-                for (int i = 0; i < paths.Count; i++)
+                string fileName = Path.GetFileName(datFiles[i]);
+                isExcluded = false;
+
+                for (int j = 0; j < ExcludedFileNames.Length; j++)
                 {
-                    Files.Add(new FileInfo(paths[i]));
+                    if (string.Equals( fileName, ExcludedFileNames[j] ))
+                    {
+                        isExcluded = true;
+                        break;
+                    }
+                }
+
+                if (!isExcluded)
+                {
+                    Files.Add(new FileInfo(datFiles[i]));
                 }
             }
 
@@ -336,8 +350,8 @@ namespace CryptTool.ViewModels.Pages
         {
             try
             {
-                FolderPath = DefaultRecipePath;
-                if (Directory.Exists(DefaultRecipePath))
+                FolderPath = DefaultTltDataPath;
+                if (Directory.Exists(DefaultTltDataPath))
                 {
                     LoadFiles();
                 }
@@ -364,6 +378,7 @@ namespace CryptTool.ViewModels.Pages
             }
 
             FolderPath = filePath;
+
             LoadFiles();
         }
     }
