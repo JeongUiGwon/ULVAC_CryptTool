@@ -301,7 +301,7 @@ namespace CryptTool.ViewModels.Pages
                 return;
             }
 
-            string[] recipeFileFormat = new string[] { "INDEX.CSV","recdat.*", "recmdat.*", "recedat.*", "rec3dtdat.*", "subrec.*" };
+            string[] recipeFileFormat = new string[] { "INDEX.CSV","recdat.*", "recmdat.*", "recedat.*", "rec3dtdat.*", "subrec.*", "llrecdat.*" };
 
             foreach (string format in recipeFileFormat)
             {
